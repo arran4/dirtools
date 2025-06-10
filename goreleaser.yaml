@@ -32,8 +32,8 @@ nfpms:
     vendor: Ubels Software Development
     homepage: https://github.com/arran4/
     maintainer: Arran Ubels <arran@ubels.com.au>
-    description: NA
-    license: Private
+    description: Collection of directory utilities for isolating and querying directories
+    license: GPL-3.0-only
     formats:
       - apk
       - deb
