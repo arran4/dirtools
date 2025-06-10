@@ -60,38 +60,15 @@ func (fc *FolderCounts) Print(onlyExt string, group bool, level int, printParent
 	}
 }
 
-func main() {
-	// Command-line arguments
-	var exts string
-	var roots string
-	var caseInsensitive bool
-	var groupOutput bool
-	var filterExt string
-	var printParent bool
-
-	flag.StringVar(&exts, "exts", ".flac,.mp3", "Comma-separated list of file extensions to search")
-	flag.StringVar(&roots, "roots", ".", "Comma-separated list of root directories")
-	flag.BoolVar(&caseInsensitive, "case-insensitive", false, "Make file extension matching case-insensitive")
-	flag.BoolVar(&groupOutput, "group", false, "Group output folders by total file counts")
-	flag.StringVar(&filterExt, "filter-ext", "", "Only list folders containing this single extension")
-	flag.BoolVar(&printParent, "print-parent", true, "Print parent filtering logic")
-	flag.Parse()
-
-	extensions := strings.Split(exts, ",")
-	if caseInsensitive {
-		for i, ext := range extensions {
-			extensions[i] = strings.ToLower(ext)
-		}
-	}
-
-	rootDirs := strings.Split(roots, ",")
-
+// BuildFolderCounts walks the provided root directories and returns a map of
+// FolderCounts keyed by path. The logic mirrors the traversal used by the main
+// command so it can be reused in tests.
+func BuildFolderCounts(rootDirs []string, extensions []string, caseInsensitive bool) (map[string]*FolderCounts, error) {
 	folderCounts := make(map[string]*FolderCounts)
 
-	// Initialize root folders
 	for _, rootDir := range rootDirs {
 		folderCounts[rootDir] = &FolderCounts{Name: rootDir, Counts: make(map[string]int)}
-		filepath.Walk(rootDir, func(path string, info os.FileInfo, err error) error {
+		err := filepath.Walk(rootDir, func(path string, info os.FileInfo, err error) error {
 			if err != nil {
 				return err
 			}
@@ -134,6 +111,44 @@ func main() {
 
 			return nil
 		})
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return folderCounts, nil
+}
+
+func main() {
+	// Command-line arguments
+	var exts string
+	var roots string
+	var caseInsensitive bool
+	var groupOutput bool
+	var filterExt string
+	var printParent bool
+
+	flag.StringVar(&exts, "exts", ".flac,.mp3", "Comma-separated list of file extensions to search")
+	flag.StringVar(&roots, "roots", ".", "Comma-separated list of root directories")
+	flag.BoolVar(&caseInsensitive, "case-insensitive", false, "Make file extension matching case-insensitive")
+	flag.BoolVar(&groupOutput, "group", false, "Group output folders by total file counts")
+	flag.StringVar(&filterExt, "filter-ext", "", "Only list folders containing this single extension")
+	flag.BoolVar(&printParent, "print-parent", true, "Print parent filtering logic")
+	flag.Parse()
+
+	extensions := strings.Split(exts, ",")
+	if caseInsensitive {
+		for i, ext := range extensions {
+			extensions[i] = strings.ToLower(ext)
+		}
+	}
+
+	rootDirs := strings.Split(roots, ",")
+
+	folderCounts, err := BuildFolderCounts(rootDirs, extensions, caseInsensitive)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 
 	// Print the folder structure
