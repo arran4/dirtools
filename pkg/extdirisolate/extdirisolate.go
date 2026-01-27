@@ -98,11 +98,8 @@ func BuildFolderCounts(rootDirs []string, extensions []string, caseInsensitive b
 			}
 
 			ext := filepath.Ext(path)
-			if caseInsensitive {
-				ext = strings.ToLower(ext)
-			}
 			for _, validExt := range extensions {
-				if ext == validExt {
+				if (caseInsensitive && strings.EqualFold(ext, validExt)) || (!caseInsensitive && ext == validExt) {
 					currentFolder.Add(validExt, 1)
 					break
 				}
