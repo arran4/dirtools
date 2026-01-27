@@ -26,8 +26,10 @@ func Search(dirs []string, pattern string, ext string, maxDepth int, out io.Writ
 		dirs = []string{"."}
 	}
 
+	sep := string(os.PathSeparator)
+
 	for _, dir := range dirs {
-		rootDepth := strings.Count(filepath.Clean(dir), string(os.PathSeparator))
+		rootDepth := strings.Count(filepath.Clean(dir), sep)
 		err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 			if err != nil {
 				if errOut != nil {
@@ -39,7 +41,7 @@ func Search(dirs []string, pattern string, ext string, maxDepth int, out io.Writ
 				return nil
 			}
 			if maxDepth >= 0 {
-				depth := strings.Count(filepath.Clean(path), string(os.PathSeparator)) - rootDepth
+				depth := strings.Count(filepath.Clean(path), sep) - rootDepth
 				if depth > maxDepth {
 					return filepath.SkipDir
 				}
