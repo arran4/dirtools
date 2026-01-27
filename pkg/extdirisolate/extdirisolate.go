@@ -2,7 +2,7 @@ package extdirisolate
 
 import (
 	"fmt"
-	"os"
+	"io/fs"
 	"path/filepath"
 	"strings"
 )
@@ -67,12 +67,12 @@ func BuildFolderCounts(rootDirs []string, extensions []string, caseInsensitive b
 
 	for _, rootDir := range rootDirs {
 		folderCounts[rootDir] = &FolderCounts{Name: rootDir, Counts: make(map[string]int)}
-		err := filepath.Walk(rootDir, func(path string, info os.FileInfo, err error) error {
+		err := filepath.WalkDir(rootDir, func(path string, d fs.DirEntry, err error) error {
 			if err != nil {
 				return err
 			}
 
-			if info.IsDir() {
+			if d.IsDir() {
 				if _, exists := folderCounts[path]; !exists {
 					folderCounts[path] = &FolderCounts{Name: path, Counts: make(map[string]int)}
 				}
