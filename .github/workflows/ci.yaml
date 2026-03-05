@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ main, master ]
 
+env:
+  TAP_GITHUB_TOKEN: ${{ secrets.TAP_GITHUB_TOKEN }}
+
 jobs:
   build:
     name: Build and Test

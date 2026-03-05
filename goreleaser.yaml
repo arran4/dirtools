@@ -67,8 +67,11 @@ brews:
     repository:
       owner: arran4
       name: homebrew-tap
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}" # From Secrets.TAP_GITHUB_TOKEN update ci.yaml too to match
+      token_type: "github"
       pull_request:
         enabled: true
+        draft: false
     directory: Formula
     homepage: "https://github.com/arran4/dirtools"
     description: "Collection of directory utilities for isolating directories"
@@ -80,8 +83,11 @@ brews:
     repository:
       owner: arran4
       name: homebrew-tap
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}" # From Secrets.TAP_GITHUB_TOKEN update ci.yaml too to match
+      token_type: "github"
       pull_request:
         enabled: true
+        draft: false
     directory: Formula
     homepage: "https://github.com/arran4/dirtools"
     description: "Collection of directory utilities for querying directories"
