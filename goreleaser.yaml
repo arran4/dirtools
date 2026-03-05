@@ -32,22 +32,22 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
-  nfpms:
-    -
-      vendor: Ubels Software Development
-      homepage: https://github.com/arran4/
-      maintainer: Arran Ubels <arran@ubels.com.au>
-      description: Collection of directory utilities for isolating and querying directories
-      license: GPL-3.0-only
-      formats:
-        - apk
-        - deb
-        - rpm
-        - termux.deb
-        - archlinux
-      release: 1
-      section: default
-      priority: extra
+nfpms:
+  -
+    vendor: Ubels Software Development
+    homepage: https://github.com/arran4/
+    maintainer: Arran Ubels <arran@ubels.com.au>
+    description: Collection of directory utilities for isolating and querying directories
+    license: GPL-3.0-only
+    formats:
+      - apk
+      - deb
+      - rpm
+      - termux.deb
+      - archlinux
+    release: 1
+    section: default
+    priority: extra
 dockers:
   - image_templates:
       - "ghcr.io/arran4/extdirisolate:{{ .Tag }}"
@@ -67,8 +67,8 @@ brews:
     repository:
       owner: arran4
       name: homebrew-tap
-    pull_request:
-      enabled: true
+      pull_request:
+        enabled: true
     directory: Formula
     homepage: "https://github.com/arran4/dirtools"
     description: "Collection of directory utilities for isolating directories"
@@ -80,8 +80,8 @@ brews:
     repository:
       owner: arran4
       name: homebrew-tap
-    pull_request:
-      enabled: true
+      pull_request:
+        enabled: true
     directory: Formula
     homepage: "https://github.com/arran4/dirtools"
     description: "Collection of directory utilities for querying directories"
