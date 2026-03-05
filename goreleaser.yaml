@@ -21,11 +21,11 @@ archives:
   -
     format_overrides:
       - goos: windows
-        format: zip
+        formats: ["zip"]
 checksum:
   name_template: 'checksums.txt'
 snapshot:
-  name_template: "{{ .Tag }}-next"
+  version_template: "{{ .Tag }}-next"
 changelog:
   sort: asc
   filters:
@@ -48,31 +48,31 @@ nfpms:
     release: 1
     section: default
     priority: extra
-dockers:
-  - image_templates:
-      - "ghcr.io/arran4/extdirisolate:{{ .Tag }}"
-    use: buildx
+dockers_v2:
+  - id: extdirisolate
+    images:
+      - "ghcr.io/arran4/extdirisolate"
+    tags:
+      - "{{ .Tag }}"
     dockerfile: cmd/extdirisolate/Dockerfile
-    ids:
-      - extdirisolate
-  - image_templates:
-      - "ghcr.io/arran4/dirquery:{{ .Tag }}"
-    use: buildx
+  - id: dirquery
+    images:
+      - "ghcr.io/arran4/dirquery"
+    tags:
+      - "{{ .Tag }}"
     dockerfile: cmd/dirquery/Dockerfile
-    ids:
-      - dirquery
-brews:
+homebrew_casks:
   -
     name: extdirisolate
     repository:
       owner: arran4
       name: homebrew-tap
-      token: "{{ .Env.TAP_GITHUB_TOKEN }}" # From Secrets.TAP_GITHUB_TOKEN update ci.yaml too to match
-      token_type: "github"
+      branch: "{{.ProjectName}}-{{.Version}}"
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
       pull_request:
         enabled: true
         draft: false
-    directory: Formula
+    directory: Casks
     homepage: "https://github.com/arran4/dirtools"
     description: "Collection of directory utilities for isolating directories"
     license: "GPL-3.0-only"
@@ -83,12 +83,12 @@ brews:
     repository:
       owner: arran4
       name: homebrew-tap
-      token: "{{ .Env.TAP_GITHUB_TOKEN }}" # From Secrets.TAP_GITHUB_TOKEN update ci.yaml too to match
-      token_type: "github"
+      branch: "{{.ProjectName}}-{{.Version}}"
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
       pull_request:
         enabled: true
         draft: false
-    directory: Formula
+    directory: Casks
     homepage: "https://github.com/arran4/dirtools"
     description: "Collection of directory utilities for querying directories"
     license: "GPL-3.0-only"
