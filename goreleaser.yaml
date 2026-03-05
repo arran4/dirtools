@@ -61,3 +61,30 @@ dockers:
     dockerfile: cmd/dirquery/Dockerfile
     ids:
       - dirquery
+brews:
+  -
+    name: extdirisolate
+    repository:
+      owner: arran4
+      name: homebrew-tap
+    pull_request:
+      enabled: true
+    directory: Formula
+    homepage: "https://github.com/arran4/dirtools"
+    description: "Collection of directory utilities for isolating directories"
+    license: "GPL-3.0-only"
+    ids:
+      - extdirisolate
+  -
+    name: dirquery
+    repository:
+      owner: arran4
+      name: homebrew-tap
+    pull_request:
+      enabled: true
+    directory: Formula
+    homepage: "https://github.com/arran4/dirtools"
+    description: "Collection of directory utilities for querying directories"
+    license: "GPL-3.0-only"
+    ids:
+      - dirquery
