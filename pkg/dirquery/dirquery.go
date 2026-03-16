@@ -31,7 +31,7 @@ func Search(dirs []string, pattern string, ext string, maxDepth int, out io.Writ
 		err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 			if err != nil {
 				if errOut != nil {
-					fmt.Fprintln(errOut, err)
+					_, _ = fmt.Fprintln(errOut, err)
 				}
 				return nil
 			}
@@ -64,7 +64,7 @@ func Search(dirs []string, pattern string, ext string, maxDepth int, out io.Writ
 				break
 			}
 			if matched {
-				fmt.Fprintln(out, path)
+				_, _ = fmt.Fprintln(out, path)
 			}
 			return nil
 		})
